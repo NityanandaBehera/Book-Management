@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-{% load stativ%}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Book Record</title>
+    <title>Edit Book Record</title>
+    {% load stativ%}
     <link rel="stylesheet" href="{% static 'css/BRMstyle.css'%}">
 
 </head>
@@ -19,31 +20,13 @@
     </div>
     </div>
     <div id="main">
-    <h2>Seacrh Book Record</h2>
+    <h2>Edit Book Record</h2>
     <form action="/BRMapp/edit" method='post'>
     {%csrf_token%}
+    <input type="hidden" name="bookid" value="{{book.id}}">
     {{form}}
-    <input type="submit" value="search">
+    <input type="submit" value="Save">
         </form>
-       {%if books %}
-       table><>
-<th>Book Title</th>
-<th>Price</th>
-<th>Author</th>
-<th>publisher</th>
-</thead>
-{% endif %}
-{% for book in books%}
-<tr>
-<td>{{book.title}}</td>
-<td>{{book.price}}</td>
-<td>{{book.author}}</td>
-<td>{{book.publisher}}</td>
-<td><a href="/BRMapp/edit-book?bookid={{book.id}}">Edit</a></td>
-<td><a href="/BRMapp/delete-book?bookid={{book.id}}">Delete</a></td>
-</tr>
-{% endfor%}
-</table> 
     </div>
 </body>
 </html>

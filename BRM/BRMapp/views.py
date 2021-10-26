@@ -7,7 +7,7 @@ from BRMapp.forms import NewBookForm,SearchForm
 
 def newBook(request):
     form=NewBookForm()
-    res=(request,'BRMapp/new_book.html',{"form":form})
+    res=render(request,'BRMapp/new_book.html',{"form":form})
     return res
 def add(request):
     if request.method=='POST':
@@ -22,12 +22,11 @@ def add(request):
     return HttpResponse(s) 
 def viewBooks(request):
     books=models.Book.objects.all()
-    username=request.session['username']
-    res=render(request,'BRMapp/view_book.html',{'books':books,'username':username}) 
+    res=render(request,'BRMapp/view_book.html',{'books':books}) 
     return res 
 def editBook(request):
     book=models.Book.objects.get(id=request.GET['bookid'])
-    fields={'title':book,'price':book.price,'author':book.author,'publisher':book.publisher}
+    fields={'title':book.title,'price':book.price,'author':book.author,'publisher':book.publisher}
     form=NewBookForm(initial=fields)
     res=render(request,'BRMapp/edit_book.html',{'form':form,'book':book})
     return res
