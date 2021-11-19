@@ -4,7 +4,32 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from BRMapp import models
 from BRMapp.forms import NewBookForm,SearchForm
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 
+
+
+def userlogin(request):
+    data={}
+    if request.method=="POST":
+        username=request.POST['username']
+        password=request.POST['password']
+        user=authenticate(request,username=username,password=password)
+        if user:
+            login(request,user)
+            request.session['username']=username
+            return HttpResponseRedirect('/BRMapp/view-books/')
+        else:
+            data['error']="username or password is incorrect"
+            res=render(request,'/BRMapp/user_login.html',data)
+            return res
+    else:
+        return render(request,'BRMapp/user_login.html',data)
+        return res
+def userlogout(request):
+    logout(request)
+    return HttpResponseRedirect('/BRMapp/login')
+@login_required(login_url="/BRMapp/login")
 def newBook(request):
     form=NewBookForm()
     res=render(request,'BRMapp/new_book.html',{"form":form})
@@ -20,16 +45,19 @@ def add(request):
         book.save()
     s="Record stored<br><a href='/BRMapp/view-books'>view all Books</a>"
     return HttpResponse(s) 
+@login_required(login_url="/BRMapp/login")
 def viewBooks(request):
     books=models.Book.objects.all()
     res=render(request,'BRMapp/view_book.html',{'books':books}) 
-    return res 
+    return res
+@login_required(login_url="/BRMapp/login")
 def editBook(request):
     book=models.Book.objects.get(id=request.GET['bookid'])
     fields={'title':book.title,'price':book.price,'author':book.author,'publisher':book.publisher}
     form=NewBookForm(initial=fields)
     res=render(request,'BRMapp/edit_book.html',{'form':form,'book':book})
     return res
+@login_required(login_url="/BRMapp/login")
 def edit(request):
     if request.method=='POST':
          form=NewBookForm(request.POST)
@@ -41,15 +69,18 @@ def edit(request):
          book.publisher=request.POST['publisher']
          book.save()
     return HttpResponseRedirect('BRMapp/view-books')
+@login_required(login_url="/BRMapp/login")
 def deleteBook(request):
     bookid=request.GET['bookid']
     book=models.Book.objects.filter(id=bookid)
     book.delete()
     return HttpResponseRedirect('/BRMapp/view-books')
+@login_required(login_url="/BRMapp/login")
 def searchBook(request):
     form=SearchForm()
     res=render(request,'BRMapp/search_book.html',{'form':form})
     return res
+@login_required(login_url="/BRMapp/login")
 def search(request):
     form=SearchForm(request.POST)
     books=models.Book.objects.filter(title=form.data['title'])
