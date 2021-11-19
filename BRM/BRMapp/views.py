@@ -47,6 +47,11 @@ def deleteBook(request):
     book.delete()
     return HttpResponseRedirect('/BRMapp/view-books')
 def searchBook(request):
-    form=SearchForm(request.POST)
+    form=SearchForm()
     res=render(request,'BRMapp/search_book.html',{'form':form})
+    return res
+def search(request):
+    form=SearchForm(request.POST)
+    books=models.Book.objects.filter(title=form.data['title'])
+    res=render(request,'BRMapp/search_book.html',{'form':form,'books':books})
     return res

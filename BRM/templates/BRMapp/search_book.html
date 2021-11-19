@@ -20,18 +20,19 @@
     </div>
     <div id="main">
     <h2>Seacrh Book Record</h2>
-    <form action="/BRMapp/edit" method='post'>
+    <form action="/BRMapp/search" method='post'>
     {%csrf_token%}
     {{form}}
     <input type="submit" value="search">
         </form>
        {%if books %}
-       table><>
+<table>
+       <thead>
 <th>Book Title</th>
 <th>Price</th>
 <th>Author</th>
 <th>publisher</th>
-</thead>
+       </thead>
 {% endif %}
 {% for book in books%}
 <tr>
@@ -39,10 +40,8 @@
 <td>{{book.price}}</td>
 <td>{{book.author}}</td>
 <td>{{book.publisher}}</td>
-<td><a href="/BRMapp/edit-book?bookid={{book.id}}">Edit</a></td>
-<td><a href="/BRMapp/delete-book?bookid={{book.id}}">Delete</a></td>
 </tr>
-{% endfor%}
+{% endfor %}
 </table> 
     </div>
 </body>
