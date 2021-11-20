@@ -18,6 +18,6 @@ from django.urls import path
 from django.conf.urls import url,include
 
 urlpatterns = [
-    url('BRMapp/',include('BRMapp.urls')),
+    url('',include('BRMapp.urls')),
     path('admin/', admin.site.urls),
 ]

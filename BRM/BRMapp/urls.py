@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^add',views.add),
     url('search',views.search),
     url('edit',views.edit),
-    url('login',views.userlogin),
+    url('',views.userlogin),
     url('logout',views.userlogout),
 ]

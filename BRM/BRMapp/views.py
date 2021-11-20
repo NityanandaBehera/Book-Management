@@ -34,6 +34,7 @@ def newBook(request):
     form=NewBookForm()
     res=render(request,'BRMapp/new_book.html',{"form":form})
     return res
+@login_required(login_url="/BRMapp/login")    
 def add(request):
     if request.method=='POST':
         form=NewBookForm(request.POST)
